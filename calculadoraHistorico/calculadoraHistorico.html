@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora com historico</title>
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    
+    <div class="container" id="app">
+        <div class="card">
+            <div class="card-header">
+                <h1><span class="badge badge-secondary">Calculadora Com Hisótico em Vue</span></h1>
+            </div>
+            <div class="card-body">
+                <form>
+                    <div class="form-group">
+                        <label class="font-weight-bold" for="numero1">Primeiro Numero</label>
+                        <input type="text" class="form-control col-8" name="numero1" id="numero1" v-model.number="numero1" placeholder="Digite um numero" required/>
+                        <small id="passwordHelpInline" class="text-muted">
+                            Digite apenas numeros com ou sem ponto. Exemplo: 1 2 3.5
+                        </small>
+                    </div>
+                    <div class="form-group">
+                        <label class="font-weight-bold" for="selecione">Escolha uma operação</label>
+                        <select class="form-control col-3" id="selecione" v-model="operacao">
+                            <option value="" disabled>Selecione uma operação</option>
+                            <option value="+">+</option>
+                            <option value="-">-</option>
+                            <option value="*">*</option>
+                            <option value="/">/</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="font-weight-bold" for="numero2">Segundo Numero</label>
+                        <input type="text" class="form-control col-8" name="numero2" id="numero2" v-model.number="numero2" placeholder="Digite outro numero" required />
+                        <small id="passwordHelpInline" class="text-muted">
+                            Digite apenas numeros com ou sem ponto. Exemplo: 1 2 3.5
+                        </small>
+                    </div>
+                    
+                    <button class="btn btn-primary"  v-on:click.prevent="calcular()">Calcular</button>
+                    <button class="btn btn-danger"  v-on:click="apagarTexto()">Excluir</button>
+
+                    <div class="form-group">
+                        <label class="font-weight-bold" for="resultado">Resultado</label>
+                        <input class="form-control col-8" type="text" name="resultado" id="resultado" v-model="resultado" readonly/>
+                    </div>
+        
+                    <ul class="list-group">
+                        <li class="list-group-item text-muted" v-for="item in historico">{{item}}</li>
+                    </ul>
+                </form>
+            </div>
+          </div>
+    </div>
+
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                numero1: null,
+                numero2: null,
+                operacao: '',
+                resultado: '',
+                historico: []
+            },
+            methods: {
+                calcular: function() {
+                    switch(this.operacao) {
+                        case '+':
+                            this.resultado = this.numero1 + this.numero2;
+                            var conta = this.numero1 + '+' + this.numero2 + '=' + this.resultado;
+                            this.historico.push(conta);
+                            break;
+                        case '-':
+                            this.resultado = this.numero1 - this.numero2;
+                            var conta = this.numero1 + '-' + this.numero2 + '=' + this.resultado;
+                            this.historico.push(conta);
+                            break;
+                        case '*':
+                            this.resultado = this.numero1 * this.numero2;
+                            var conta = this.numero1 + '*' + this.numero2 + '=' + this.resultado;
+                            this.historico.push(conta);
+                            break;
+                        case '/':
+                            this.resultado = this.numero1 / this.numero2;
+                            var conta = this.numero1 + '/' + this.numero2 + '=' + this.resultado;
+                            this.historico.push(conta);
+                            break;
+                        default:
+                            alert("opção inválida!");
+                    }
+                },
+                apagarTexto() {
+                    this.numero1 = '';
+                    this.numero2 = '';
+                    this.operacao = '';
+                    this.resultado = '';
+                }
+            }
+           
+        })
+    </script>
+
+    <script src="/static/js/bootstrap.min.js"></script>
+    <script src="/static/js/jquery-3.5.1.slim.min.js"></script>
+    <script src="/static/js/popper.min.js"></script>
+</body>
+</html>
